@@ -1,0 +1,47 @@
+name: 'Terraform CI'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/**'
+
+
+permissions:
+  contents: read
+  id-token: write
+
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: 'eu-west-2'
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: '1.6.0'
+
+      - name: Run Terraform
+        env:
+          TF_VAR_owner: ${{ github.repository_owner }}
+          TF_VAR_repository_name: ${{ github.event.repository.name }}
+          TF_VAR_state_bucket: ${{ secrets.TF_STATE_BUCKET }}
+          TF_VAR_state_key: ${{ github.event.repository.name }}/terraform.tfstate
+        run: |
+          cd terraform
+          terraform init \
+            -backend-config="bucket=${TF_VAR_state_bucket}" \
+            -backend-config="key=${TF_VAR_state_key}"
+          terraform plan -out=plan.tfplan
+          terraform apply "plan.tfplan"
