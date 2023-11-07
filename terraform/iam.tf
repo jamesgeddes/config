@@ -56,6 +56,7 @@ resource "aws_iam_policy" "s3_readwrite" {
           "s3:GetBucketWebsite",
           "s3:PutBucketWebsite",
           "s3:DeleteBucketWebsite",
+          "s3:GetBucketAccelerateConfiguration",
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject",
@@ -63,7 +64,7 @@ resource "aws_iam_policy" "s3_readwrite" {
           "s3:AbortMultipartUpload",
           "s3:ListMultipartUploadParts"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = [
           aws_s3_bucket.tfstate.arn,
           "${aws_s3_bucket.tfstate.arn}/*"
