@@ -41,40 +41,36 @@ resource "aws_iam_policy" "s3_readwrite" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "S3PermissionsForObjectOperations"
-        Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:DeleteObject",
-          "s3:GetBucketPolicy",
-          "s3:CreateMultipartUpload",
-          "s3:CreateMultipartUpload",
-          "s3:AbortMultipartUpload",
-          "s3:ListMultipartUploadParts",
-        ]
-        Effect = "Allow"
-        Resource = [
-          "${aws_s3_bucket.tfstate.arn}/*",
-        ]
-      },
-      {
-        Sid = "S3PermissionsForBucketOperations"
+        Sid = "FullS3BucketManagement"
         Action = [
           "s3:ListBucket",
-          "s3:GetBucketPolicy",
           "s3:GetBucketAcl",
           "s3:PutBucketAcl",
           "s3:GetBucketCORS",
+          "s3:PutBucketCORS",
+          "s3:GetBucketVersioning",
+          "s3:PutBucketVersioning",
+          "s3:GetBucketPolicy",
+          "s3:PutBucketPolicy",
+          "s3:DeleteBucketPolicy",
           "s3:GetBucketWebsite",
+          "s3:PutBucketWebsite",
+          "s3:DeleteBucketWebsite",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucketMultipartUploads",
+          "s3:AbortMultipartUpload",
+          "s3:ListMultipartUploadParts"
         ]
         Effect = "Allow"
         Resource = [
           aws_s3_bucket.tfstate.arn,
+          "${aws_s3_bucket.tfstate.arn}/*"
         ]
-      },
+      }
     ]
   })
-
 }
 
 resource "aws_iam_policy" "oidc_read" {
