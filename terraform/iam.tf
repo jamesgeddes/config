@@ -46,21 +46,28 @@ resource "aws_iam_policy" "s3_readwrite" {
           "s3:PutObject",
           "s3:GetObject",
           "s3:DeleteObject",
+          "s3:GetBucketPolicy",
           "s3:CreateMultipartUpload",
+          "s3:CreateMultipartUpload",
+          "s3:AbortMultipartUpload",
+          "s3:ListMultipartUploadParts",
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:s3:::${var.state_bucket}/*",
+          "${aws_s3_bucket.tfstate.arn}/*",
         ]
       },
       {
         Sid = "S3PermissionsForBucketOperations"
         Action = [
           "s3:ListBucket",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketAcl",
+          "s3:PutBucketAcl",
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:s3:::${var.state_bucket}",
+          aws_s3_bucket.tfstate.arn,
         ]
       },
     ]
