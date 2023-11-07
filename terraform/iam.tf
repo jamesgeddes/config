@@ -62,7 +62,8 @@ resource "aws_iam_policy" "s3_readwrite" {
           "s3:DeleteObject",
           "s3:ListBucketMultipartUploads",
           "s3:AbortMultipartUpload",
-          "s3:ListMultipartUploadParts"
+          "s3:ListMultipartUploadParts",
+          "s3:*"  # TODO Yes, I know this is suboptimal.
         ]
         Effect   = "Allow"
         Resource = [
