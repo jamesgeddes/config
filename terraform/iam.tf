@@ -64,6 +64,7 @@ resource "aws_iam_policy" "s3_readwrite" {
           "s3:GetBucketPolicy",
           "s3:GetBucketAcl",
           "s3:PutBucketAcl",
+          "s3:GetBucketCORS",
         ]
         Effect = "Allow"
         Resource = [
