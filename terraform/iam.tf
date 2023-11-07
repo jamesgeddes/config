@@ -134,6 +134,7 @@ resource "aws_iam_policy" "iam_readwrite" {
   })
 }
 
+
 resource "aws_iam_policy" "assume_githubactions_policy" {
   name   = "AssumeGithubActionsPolicy"
   policy = data.aws_iam_policy_document.assume_githubactions_policy.json

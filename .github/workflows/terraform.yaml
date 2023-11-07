@@ -40,6 +40,8 @@ jobs:
           TF_VAR_state_key: ${{ github.event.repository.name }}/terraform.tfstate
         run: |
           cd terraform
+          aws s3api get-bucket-accelerate-configuration --bucket $TF_VAR_state_bucket
+
           terraform init \
             -backend-config="bucket=${TF_VAR_state_bucket}" \
             -backend-config="key=${TF_VAR_state_key}"
